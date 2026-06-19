@@ -1,16 +1,16 @@
 import {CreateOrder} from "@src/types";
 
 export const createCtHeadOrder = (): CreateOrder => ({
-    patient_name: "Test Patient 01",
-    patient_id: "PAT-TEST-001",
+    patient_name: `Test Patient CT ${Date.now()}`,
+    patient_id: `PAT-CT-${Date.now()}`,
     modality: "CT",
     body_part: "Head",
     priority: "URGENT"
 });
 
 export const createMrKneeOrder = (): CreateOrder => ({
-    patient_name: "Test Patient 02",
-    patient_id: "PAT-TEST-002",
+    patient_name: `Test Patient MR ${Date.now()}`,
+    patient_id: `PAT-MR-${Date.now()}`,
     modality: "MR",
     body_part: "Knee",
     priority: "ROUTINE"

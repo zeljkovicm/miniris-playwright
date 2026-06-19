@@ -1,14 +1,20 @@
 import {ApiClient} from "@src/api/ApiClient";
-import {ApiResponse, CreateOrder, Order, Orders} from "@src/types";
-import {APIRequestContext, APIResponse} from "@playwright/test";
+import {ApiResponse, CreateOrder, Modality, Order, Orders, OrderStatus} from "@src/types";
+import {APIRequestContext} from "@playwright/test";
 
 export class OrdersClient extends ApiClient{
     constructor(request: APIRequestContext) {
         super(request);
     }
 
-    async getOrders(): Promise<ApiResponse<Orders>> {
-        return this.get<Orders>("/api/orders");
+    async getOrders(status?: OrderStatus, modality?: Modality, q?: string): Promise<ApiResponse<Orders>> {
+        const query = new URLSearchParams();
+        if (status) query.set("status", status);
+        if (modality) query.set("modality", modality);
+        if (q) query.set("q", q);
+
+        const endpoint = `/api/orders${query.toString() ? "?" + query.toString() : ""}`;
+        return this.get<Orders>(endpoint);
     }
 
     async getOrder(id: string): Promise<ApiResponse<Order>> {

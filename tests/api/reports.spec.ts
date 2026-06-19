@@ -50,4 +50,17 @@ test.describe("Reports API", () => {
         expect(signedReport.data.signed_at).toBeDefined();
 
     })
+
+    test("Should return 409 when signing already signed report @api", async ({ordersClient, reportsClient}) => {
+        const order = await ordersClient.createOrder(createCtHeadOrder());
+        await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
+        await ordersClient.performOrder(order.data.id);
+        const report = await reportsClient.createReport(createReportData(order.data.id));
+        await reportsClient.signReport(report.data.id);
+        await expect(reportsClient.signReport(report.data.id)).rejects.toThrow("409");
+    })
+
+    test("Should return 422 for invalid report body @api", async ({reportsClient}) => {
+        await expect(reportsClient.createReport({} as any)).rejects.toThrow("422");
+    })
 })

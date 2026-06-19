@@ -15,9 +15,17 @@ class OrdersClient extends ApiClient_1.ApiClient {
     constructor(request) {
         super(request);
     }
-    getOrders() {
+    getOrders(status, modality, q) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.get("/api/orders");
+            const query = new URLSearchParams();
+            if (status)
+                query.set("status", status);
+            if (modality)
+                query.set("modality", modality);
+            if (q)
+                query.set("q", q);
+            const endpoint = `/api/orders${query.toString() ? "?" + query.toString() : ""}`;
+            return this.get(endpoint);
         });
     }
     getOrder(id) {

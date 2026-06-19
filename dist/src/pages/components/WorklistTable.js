@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorklistTable = void 0;
+const test_1 = require("@playwright/test");
 class WorklistTable {
     constructor(page) {
         this.page = page;
@@ -40,7 +41,11 @@ class WorklistTable {
     }
     waitForOrderStatus(id, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.page.getByTestId(`status-${id}`).getByText(status).waitFor({ state: "visible" });
+            yield (0, test_1.expect)(() => __awaiter(this, void 0, void 0, function* () {
+                yield this.refreshButton.click();
+                yield this.worklistLoading.waitFor({ state: 'hidden' });
+                yield this.page.getByTestId(`status-${id}`).getByText(status).waitFor({ state: 'visible', timeout: 3000 });
+            })).toPass({ timeout: 30000, intervals: [2000] });
         });
     }
 }

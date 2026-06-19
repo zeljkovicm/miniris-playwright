@@ -1,5 +1,5 @@
 import {Locator, Page, expect} from "@playwright/test";
-import {OrderStatus} from "@src/types";
+import {Modality, OrderStatus} from "@src/types";
 import {Component} from "@src/pages/components/Component";
 
 export class WorklistTable implements Component{
@@ -46,6 +46,36 @@ export class WorklistTable implements Component{
             await this.worklistLoading.waitFor({ state: 'hidden' });
             await this.page.getByTestId(`status-${id}`).getByText(status).waitFor({ state: 'visible', timeout: 3000 });
         }).toPass({ timeout: 30_000, intervals: [2000] });
+    }
+
+    async waitForPatient(name: string): Promise<void> {
+        await expect(async () => {
+            await this.refreshButton.click();
+            await this.worklistLoading.waitFor({ state: 'hidden' });
+            await this.worklistTableBody.getByText(name).waitFor({ state: 'visible', timeout: 3000 });
+        }).toPass({ timeout: 10_000, intervals: [1000] });
+    }
+
+    async filterByStatus(status: OrderStatus): Promise<void> {
+        await this.statusFilter.selectOption(status);
+        await this.applyButton.click();
+        await this.isReady();
+    }
+
+    async filterByModality(modality: Modality): Promise<void> {
+        await this.modalityFilter.selectOption(modality);
+        await this.applyButton.click();
+        await this.isReady();
+    }
+
+    async containsPatient(name: string): Promise<void> {
+        await expect(this.worklistTableBody.getByText(name)).toBeVisible();
+    }
+
+    async search(query: string): Promise<void> {
+        await this.searchInput.fill(query);
+        await this.applyButton.click();
+        await this.isReady();
     }
 
 }

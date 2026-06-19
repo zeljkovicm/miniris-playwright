@@ -5,6 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
 dotenv.config({path: path.resolve(__dirname, ".env")});
 
 export default defineConfig({
+  globalSetup: "./global-setup.ts",
   timeout: 30_000,
   expect: {
     timeout: 10_000,
