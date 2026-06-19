@@ -36,7 +36,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "docker compose -f ../miniris/docker-compose.yml up --build",
+    command: "docker compose -f miniris/docker-compose.yml up --build",
     url: `${process.env.BASE_URL}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000
