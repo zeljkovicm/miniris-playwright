@@ -1,0 +1,53 @@
+import {test, expect} from "@src/fixtures";
+import {createCtHeadOrder, createReportData} from "@src/data";
+import {ApiResponse, Order, Report} from "@src/types";
+
+test.describe("Reports API", () => {
+    test("Should create a report", async ({ordersClient, reportsClient}) => {
+        const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
+        await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
+        await ordersClient.performOrder(order.data.id);
+
+        const report = await reportsClient.createReport(createReportData(order.data.id));
+
+        expect(report.status).toBe(201);
+        expect(report.data.id).toBeDefined();
+        expect(report.data.order_id).toBe(order.data.id);
+        expect(report.data.status).toBe("DRAFT");
+    })
+
+    test("Should get 409 when createing report for non-performed orders", async ({ordersClient, reportsClient}) => {
+        const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
+        await expect(reportsClient.createReport(createReportData(order.data.id))).rejects.toThrow("409");
+    })
+
+    test('Should get a report', async ({ ordersClient, reportsClient }) => {
+        const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
+        await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
+        await ordersClient.performOrder(order.data.id);
+        const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.data.id));
+
+        const fetchedReport: ApiResponse<Report> = await reportsClient.getReport(report.data.id);
+
+        expect(fetchedReport.status).toBe(200);
+        expect(fetchedReport.data.id).toBe(report.data.id);
+    })
+
+    test("Should get 404 for non existing report", async({ordersClient, reportsClient}) => {
+        await expect(reportsClient.getReport("wrong id")).rejects.toThrow("404");
+    })
+
+    test("Should sign a report", async({ordersClient, reportsClient}) => {
+        const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
+        await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
+        await ordersClient.performOrder(order.data.id);
+        const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.data.id));
+
+        const signedReport: ApiResponse<Report>  = await reportsClient.signReport(report.data.id);
+
+        expect(signedReport.status).toBe(200);
+        expect(signedReport.data.status).toBe("SIGNED");
+        expect(signedReport.data.signed_at).toBeDefined();
+
+    })
+})
