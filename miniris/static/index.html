@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiniRIS</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>MiniRIS</h1>
+    <span class="subtitle">Radiology worklist (synthetic test target)</span>
+  </header>
+
+  <main>
+    <section class="card" id="new-order-card">
+      <h2>New order</h2>
+      <div class="form-grid">
+        <label>Patient name
+          <input id="patient_name" data-testid="patient-name" type="text" />
+        </label>
+        <label>Patient ID
+          <input id="patient_id" data-testid="patient-id" type="text" />
+        </label>
+        <label>Modality
+          <select id="modality" data-testid="modality">
+            <option value="CT">CT</option>
+            <option value="MR">MR</option>
+            <option value="XR">XR</option>
+            <option value="US">US</option>
+            <option value="MG">MG</option>
+          </select>
+        </label>
+        <label>Body part
+          <input id="body_part" data-testid="body-part" type="text" />
+        </label>
+        <label>Priority
+          <select id="priority" data-testid="priority">
+            <option value="ROUTINE">ROUTINE</option>
+            <option value="URGENT">URGENT</option>
+            <option value="STAT">STAT</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button id="create-order" data-testid="create-order">Create order</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="worklist-card">
+      <h2>Worklist</h2>
+      <div class="filters">
+        <label>Status
+          <select id="filter-status" data-testid="filter-status">
+            <option value="">All</option>
+            <option value="REGISTERED">REGISTERED</option>
+            <option value="SCHEDULED">SCHEDULED</option>
+            <option value="PERFORMED">PERFORMED</option>
+            <option value="REPORTED">REPORTED</option>
+            <option value="SIGNED">SIGNED</option>
+          </select>
+        </label>
+        <label>Modality
+          <select id="filter-modality" data-testid="filter-modality">
+            <option value="">All</option>
+            <option value="CT">CT</option>
+            <option value="MR">MR</option>
+            <option value="XR">XR</option>
+            <option value="US">US</option>
+            <option value="MG">MG</option>
+          </select>
+        </label>
+        <label>Search
+          <input id="search" data-testid="search" type="text" placeholder="name or patient ID" />
+        </label>
+        <button id="apply-filters" data-testid="apply-filters">Apply</button>
+        <button id="refresh" data-testid="refresh">Refresh</button>
+      </div>
+
+      <div id="worklist-loading" data-testid="worklist-loading" class="loading" hidden>Loading worklist&hellip;</div>
+      <table id="worklist" data-testid="worklist">
+        <thead>
+          <tr>
+            <th>Order</th><th>Patient</th><th>Patient ID</th><th>Modality</th>
+            <th>Body part</th><th>Priority</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="worklist-body" data-testid="worklist-body"></tbody>
+      </table>
+      <p id="worklist-empty" data-testid="worklist-empty" hidden>No matching orders.</p>
+    </section>
+
+    <section class="card" id="detail-card" data-testid="detail-card" hidden>
+      <h2>Order detail</h2>
+      <dl class="detail">
+        <dt>Order</dt><dd id="detail-id" data-testid="detail-id"></dd>
+        <dt>Patient</dt><dd id="detail-patient" data-testid="detail-patient"></dd>
+        <dt>Status</dt><dd id="detail-status" data-testid="detail-status"></dd>
+      </dl>
+
+      <div class="actions">
+        <div class="action-row" id="action-schedule" hidden>
+          <input id="scheduled_at" data-testid="scheduled-at" type="datetime-local" />
+          <button id="do-schedule" data-testid="do-schedule">Schedule</button>
+        </div>
+        <div class="action-row" id="action-perform" hidden>
+          <button id="do-perform" data-testid="do-perform">Mark performed</button>
+        </div>
+        <div class="action-row" id="action-report" hidden>
+          <input id="radiologist" data-testid="radiologist" type="text" placeholder="radiologist" />
+          <textarea id="report_body" data-testid="report-body" placeholder="findings"></textarea>
+          <button id="do-report" data-testid="do-report">Create report</button>
+        </div>
+        <div class="action-row" id="action-sign" hidden>
+          <button id="do-sign" data-testid="do-sign">Sign report</button>
+        </div>
+        <div class="action-row" id="action-done" hidden>
+          <span data-testid="detail-done">Order signed. Workflow complete.</span>
+        </div>
+      </div>
+
+      <p id="detail-error" data-testid="detail-error" class="error" hidden></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
