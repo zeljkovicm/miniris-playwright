@@ -4,18 +4,18 @@ import {createCtHeadOrder} from "@src/data";
 import {ApiResponse, Order, Orders} from "@src/types";
 
 test.describe("Orders API", () => {
-    test("Should return a list of orders", async ({ordersClient}) => {
+    test("Should return a list of orders @api", async ({ordersClient}) => {
         const orders: ApiResponse<Orders> = await ordersClient.getOrders();
 
         expect(orders.status).toBe(200);
         expect(Array.isArray(orders.data.items)).toBe(true);
     })
 
-    test("Should return 404 for non-existing order", async ({ordersClient}) => {
+    test("Should return 404 for non-existing order @api", async ({ordersClient}) => {
         await expect(ordersClient.getOrder("wrong id")).rejects.toThrow("404")
     })
 
-    test("Should create an order", async ({ordersClient}) => {
+    test("Should create an order @api @smoke", async ({ordersClient}) => {
         const order = await ordersClient.createOrder(createCtHeadOrder());
 
         expect(order.status).toBe(201);
@@ -25,7 +25,7 @@ test.describe("Orders API", () => {
         expect(order.data.modality).toBe("CT");
     })
 
-    test("Should return a single order", async ({ordersClient}) => {
+    test("Should return a single order @api", async ({ordersClient}) => {
         const {data: created} = await ordersClient.createOrder(createCtHeadOrder());
         const singleOrder: ApiResponse<Order> = await ordersClient.getOrder(created.id);
 
@@ -33,7 +33,7 @@ test.describe("Orders API", () => {
         expect(singleOrder.data.id).toBe(created.id);
     })
 
-    test("Should schedule an order", async({ordersClient}) => {
+    test("Should schedule an order @api @smoke", async({ordersClient}) => {
         const order = await ordersClient.createOrder(createCtHeadOrder());
         const scheduledAt = new Date().toISOString();
 
@@ -44,7 +44,7 @@ test.describe("Orders API", () => {
         expect(scheduledOrder.data.scheduled_at).toBeDefined();
     })
 
-    test("Should perform an order", async({ordersClient}) => {
+    test("Should perform an order @api", async({ordersClient}) => {
         const order = await ordersClient.createOrder(createCtHeadOrder());
         const scheduledAt = new Date().toISOString();
 
@@ -55,11 +55,11 @@ test.describe("Orders API", () => {
         expect(performedOrder.data.status).toBe("PERFORMED");
     })
 
-    test("Should return 404 when performing non-existent order", async({ordersClient}) => {
+    test("Should return 404 when performing non-existent order @api", async({ordersClient}) => {
         await expect(ordersClient.performOrder("wrong id")).rejects.toThrow("404")
     })
 
-    test("Should return 409 when scheduling an already scheduled order", async({ordersClient}) => {
+    test("Should return 409 when scheduling an already scheduled order @api", async({ordersClient}) => {
         const {data: order} = await ordersClient.createOrder(createCtHeadOrder());
         const scheduledAt: string = new Date().toISOString();
 

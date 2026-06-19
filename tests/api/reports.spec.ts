@@ -3,7 +3,7 @@ import {createCtHeadOrder, createReportData} from "@src/data";
 import {ApiResponse, Order, Report} from "@src/types";
 
 test.describe("Reports API", () => {
-    test("Should create a report", async ({ordersClient, reportsClient}) => {
+    test("Should create a report @api @smoke", async ({ordersClient, reportsClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
         await ordersClient.performOrder(order.data.id);
@@ -16,12 +16,12 @@ test.describe("Reports API", () => {
         expect(report.data.status).toBe("DRAFT");
     })
 
-    test("Should get 409 when createing report for non-performed orders", async ({ordersClient, reportsClient}) => {
+    test("Should get 409 when createing report for non-performed orders @api", async ({ordersClient, reportsClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         await expect(reportsClient.createReport(createReportData(order.data.id))).rejects.toThrow("409");
     })
 
-    test('Should get a report', async ({ ordersClient, reportsClient }) => {
+    test("Should get a report @api", async ({ ordersClient, reportsClient }) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
         await ordersClient.performOrder(order.data.id);
@@ -33,11 +33,11 @@ test.describe("Reports API", () => {
         expect(fetchedReport.data.id).toBe(report.data.id);
     })
 
-    test("Should get 404 for non existing report", async({ordersClient, reportsClient}) => {
+    test("Should get 404 for non existing report @api", async({ordersClient, reportsClient}) => {
         await expect(reportsClient.getReport("wrong id")).rejects.toThrow("404");
     })
 
-    test("Should sign a report", async({ordersClient, reportsClient}) => {
+    test("Should sign a report @api @smoke", async({ordersClient, reportsClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
         await ordersClient.performOrder(order.data.id);

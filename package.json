@@ -6,10 +6,11 @@
   "scripts": {
     "build": "tsc",
     "test": "playwright test",
-    "test:api": "playwright test tests/api",
-    "test:e2e": "playwright test tests/e2e",
+    "test:api": "playwright test --grep @api",
+    "test:e2e": "playwright test --grep @e2e",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep @smoke",
     "report": "playwright show-report"
   },
   "devDependencies": {

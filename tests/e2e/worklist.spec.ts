@@ -3,7 +3,7 @@ import {createCtHeadOrder} from "@src/data";
 import {ApiResponse, Order} from "@src/types";
 
 test.describe("Worklist E2E", () => {
-    test("Should complete full workflow to signed report", async ({ordersClient, mainPage}) => {
+    test("Should complete full workflow to signed report @e2e", async ({ordersClient, mainPage}) => {
         const order: ApiResponse<Order> =  await ordersClient.createOrder(createCtHeadOrder());
         await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
         await ordersClient.performOrder(order.data.id);
