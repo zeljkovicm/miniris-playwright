@@ -18,7 +18,6 @@ export const test = base.extend<Fixtures>({
     },
     adminClient: async ({request}, use) => {
         const client = new AdminClient(request);
-        await client.reset();
         await use(client);
     },
     mainPage: async ({page}, use) => {
