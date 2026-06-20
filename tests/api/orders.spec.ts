@@ -96,7 +96,7 @@ test.describe("Orders API", () => {
         expect(orders.data.items.every(order => order.modality === testModality)).toBe(true);
     })
 
-    test("Should search orders py patient name @api", async ({ordersClient}) => {
+    test("Should search orders by patient name @api", async ({ordersClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         const orders: ApiResponse<Orders> = await ordersClient.getOrders(undefined, undefined, order.data.patient_name);
 
@@ -104,7 +104,7 @@ test.describe("Orders API", () => {
         expect(orders.data.items.some(o => o.patient_name === order.data.patient_name)).toBe(true);
     })
 
-    test("Should search orders py patient id @api", async ({ordersClient}) => {
+    test("Should search orders by patient id @api", async ({ordersClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         const orders: ApiResponse<Orders> = await ordersClient.getOrders(undefined, undefined, order.data.patient_id);
 
