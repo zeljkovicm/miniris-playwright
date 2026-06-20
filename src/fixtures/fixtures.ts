@@ -17,8 +17,7 @@ export const test = base.extend<Fixtures>({
         await use(new ReportsClient(request));
     },
     adminClient: async ({request}, use) => {
-        const client = new AdminClient(request);
-        await use(client);
+        await use(new AdminClient(request));
     },
     mainPage: async ({page}, use) => {
         const mainPage = new MainPage(page);
