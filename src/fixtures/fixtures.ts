@@ -20,8 +20,7 @@ export const test = base.extend<Fixtures>({
         await use(new AdminClient(request));
     },
     mainPage: async ({page}, use) => {
-        const mainPage = new MainPage(page);
-        await use(mainPage);
+        await use(new MainPage(page));
     }
 })
 

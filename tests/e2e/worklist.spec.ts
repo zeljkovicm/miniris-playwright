@@ -1,10 +1,10 @@
 import {test, expect} from "@src/fixtures";
 import {createCtHeadOrder} from "@src/data";
-import {ApiResponse, Order} from "@src/types";
+import {ApiResponse, CreateOrder, Order} from "@src/types";
 
 test.describe("Worklist E2E", () => {
     test("Should create an order through UI @e2e", async ({mainPage}) => {
-        const orderData = createCtHeadOrder();
+        const orderData: CreateOrder = createCtHeadOrder();
         await mainPage.goto();
         await mainPage.isReady();
         await mainPage.newOrderForm.createOrder(orderData);

@@ -8,14 +8,14 @@ export class ReportsClient extends ApiClient{
     }
 
     async getReport(id: string): Promise<ApiResponse<Report>> {
-        return this.get<Report>(`/api/reports/${id}`);
+        return await this.get<Report>(`/api/reports/${id}`);
     }
 
     async createReport(data: CreateReport): Promise<ApiResponse<Report>> {
-        return this.post<Report>("/api/reports", data);
+        return await this.post<Report>("/api/reports", data, 201);
     }
 
     async signReport(id: string): Promise<ApiResponse<Report>> {
-        return this.post<Report>(`/api/reports/${id}/sign`);
+        return await this.post<Report>(`/api/reports/${id}/sign`);
     }
 }

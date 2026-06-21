@@ -1,13 +1,14 @@
-import {APIRequestContext} from "@playwright/test";
+import {APIRequestContext, APIResponse} from "@playwright/test";
 import {ApiResponse} from "@src/types";
 
 export class ApiClient {
     constructor(private apiClient: APIRequestContext) {}
 
-    async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-        const response = await this.apiClient.get(endpoint);
-        if (!response.ok()) {
-            throw new Error(`GET ${endpoint} failed with status ${response.status()}`);
+    async get<T>(endpoint: string, expectedStatus: number = 200): Promise<ApiResponse<T>> {
+        const response: APIResponse = await this.apiClient.get(endpoint);
+
+        if (response.status() !== expectedStatus) {
+            throw new Error(`GET ${endpoint} expected ${expectedStatus} status code, but got ${response.status()} status code`);
         }
 
         return {
@@ -16,11 +17,11 @@ export class ApiClient {
         }
     }
 
-    async post<T>(endpoint: string, body?: object): Promise<ApiResponse<T>> {
-        const response = await this.apiClient.post(endpoint, {data: body});
+    async post<T>(endpoint: string, body?: object, expectedStatus: number = 200): Promise<ApiResponse<T>> {
+        const response: APIResponse = await this.apiClient.post(endpoint, {data: body});
 
-        if (!response.ok()) {
-            throw new Error(`POST ${endpoint} failed with status ${response.status()}`);
+        if (response.status() !== expectedStatus) {
+            throw new Error(`POST ${endpoint} expected ${expectedStatus} status code, but got ${response.status()} status code`);
         }
 
         return {

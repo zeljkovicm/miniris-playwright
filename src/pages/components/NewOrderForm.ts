@@ -24,12 +24,12 @@ export class NewOrderForm implements Component{
         await this.createOrderButton.waitFor({state: "visible"});
     }
 
-    async createOrder(data: CreateOrder): Promise<void> {
-        await this.patientNameInput.fill(data.patient_name);
-        await this.patientIdInput.fill(data.patient_id);
-        await this.modalityInput.selectOption(data.modality);
-        await this.bodyPartInput.fill(data.body_part);
-        await this.priorityInput.selectOption(data.priority);
-        await this.createOrderButton.click()
+    async createOrder(orderData: CreateOrder): Promise<void> {
+        await this.patientNameInput.fill(orderData.patient_name);
+        await this.patientIdInput.fill(orderData.patient_id);
+        await this.modalityInput.selectOption(orderData.modality);
+        await this.bodyPartInput.fill(orderData.body_part);
+        await this.priorityInput.selectOption(orderData.priority);
+        await this.createOrderButton.click();
     }
 }

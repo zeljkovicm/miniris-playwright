@@ -14,22 +14,22 @@ export class OrdersClient extends ApiClient{
         if (q) query.set("q", q);
 
         const endpoint = `/api/orders${query.toString() ? "?" + query.toString() : ""}`;
-        return this.get<Orders>(endpoint);
+        return await this.get<Orders>(endpoint);
     }
 
     async getOrder(id: string): Promise<ApiResponse<Order>> {
-        return this.get<Order>(`/api/orders/${id}`);
+        return await this.get<Order>(`/api/orders/${id}`);
     }
 
     async createOrder(data: CreateOrder): Promise<ApiResponse<Order>> {
-        return this.post<Order>("/api/orders", data);
+        return await this.post<Order>("/api/orders", data, 201);
     }
 
     async scheduleOrder(id: string, scheduledAt: string): Promise<ApiResponse<Order>> {
-        return this.post<Order>(`/api/orders/${id}/schedule`, {scheduled_at: scheduledAt});
+        return await this.post<Order>(`/api/orders/${id}/schedule`, {scheduled_at: scheduledAt});
     }
 
     async performOrder(id: string): Promise<ApiResponse<Order>> {
-        return this.post<Order>(`/api/orders/${id}/perform`);
+        return await this.post<Order>(`/api/orders/${id}/perform`);
     }
 }

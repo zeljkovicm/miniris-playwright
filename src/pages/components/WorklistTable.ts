@@ -44,16 +44,12 @@ export class WorklistTable implements Component{
         await expect(async () => {
             await this.refreshButton.click();
             await this.worklistLoading.waitFor({ state: 'hidden' });
-            await this.page.getByTestId(`status-${id}`).getByText(status).waitFor({ state: 'visible', timeout: 3000 });
-        }).toPass({ timeout: 30_000, intervals: [2000] });
+            await this.page.getByTestId(`status-${id}`).getByText(status).waitFor({ state: 'visible', timeout: 1000 });
+        }).toPass({ timeout: 15_000, intervals: [500] });
     }
 
     async waitForPatient(name: string): Promise<void> {
-        await expect(async () => {
-            await this.refreshButton.click();
-            await this.worklistLoading.waitFor({ state: 'hidden' });
-            await this.worklistTableBody.getByText(name).waitFor({ state: 'visible', timeout: 3000 });
-        }).toPass({ timeout: 10_000, intervals: [1000] });
+        await expect(this.worklistTableBody.getByText(name)).toBeVisible();
     }
 
     async filterByStatus(status: OrderStatus): Promise<void> {
