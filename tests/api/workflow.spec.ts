@@ -10,7 +10,7 @@ test.describe("Full API workflow", () => {
         const scheduleOrder: ApiResponse<Order> = await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
         expect(scheduleOrder.data.status).toBe("SCHEDULED");
 
-        const performed: ApiResponse<Order> = await ordersClient.performOrder(scheduleOrder.data.id);
+        const performed: ApiResponse<Order> = await ordersClient.performOrder(order.data.id);
         expect(performed.data.status).toBe("PERFORMED");
 
         const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.data.id));
