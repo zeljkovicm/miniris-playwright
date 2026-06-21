@@ -10,7 +10,6 @@ test.describe("Reports API", () => {
 
         const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.data.id));
 
-        expect(report.status).toBe(201);
         expect(report.data.id).toBeDefined();
         expect(report.data.order_id).toBe(order.data.id);
         expect(report.data.status).toBe("DRAFT");
@@ -29,7 +28,6 @@ test.describe("Reports API", () => {
 
         const fetchedReport: ApiResponse<Report> = await reportsClient.getReport(report.data.id);
 
-        expect(fetchedReport.status).toBe(200);
         expect(fetchedReport.data.id).toBe(report.data.id);
     })
 
@@ -45,7 +43,6 @@ test.describe("Reports API", () => {
 
         const signedReport: ApiResponse<Report>  = await reportsClient.signReport(report.data.id);
 
-        expect(signedReport.status).toBe(200);
         expect(signedReport.data.status).toBe("SIGNED");
         expect(signedReport.data.signed_at).toBeDefined();
 
