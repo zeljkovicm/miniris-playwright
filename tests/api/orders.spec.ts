@@ -2,6 +2,7 @@ import {test, expect} from "@src/fixtures";
 
 import {createCtHeadOrder} from "@src/data";
 import {ApiResponse, CreateOrder, Modality, Order, Orders, OrderStatus} from "@src/types";
+import {createPerformedOrder} from "@src/helpers";
 
 test.describe("Orders API", () => {
 
@@ -37,7 +38,7 @@ test.describe("Orders API", () => {
         })
     })
 
-    test.describe("Validation and state transition", () => {
+    test.describe("Validation and state transitions", () => {
         test("Should return 404 for non-existing order @api", async ({ordersClient}) => {
             await expect(ordersClient.getOrder("wrong id")).rejects.toThrow("404")
         })
@@ -57,10 +58,8 @@ test.describe("Orders API", () => {
         })
 
         test("Should return 409 when performing already performed order @api", async ({ordersClient}) => {
-            const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
-            await ordersClient.scheduleOrder(order.data.id, new Date().toISOString());
-            await ordersClient.performOrder(order.data.id);
-            await expect(ordersClient.performOrder(order.data.id)).rejects.toThrow("409");
+            const order: Order = await createPerformedOrder(ordersClient);
+            await expect(ordersClient.performOrder(order.id)).rejects.toThrow("409");
         })
 
         test("Should return 409 when performing non-scheduled order @api", async ({ordersClient}) => {
