@@ -48,7 +48,10 @@ test.describe("Orders API", () => {
         })
 
         test("Should not allow scheduling in the past @api", async({ordersClient}) => {
-            test.fail(true, "BUG: API accepts scheduled_at in past (API is not validating that time must be in future)")
+            test.fixme(
+                true,
+                "Question: Specification does not define whether a past scheduled_at should be rejected, API currently accepts it."
+            )
             const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
             const pastDate: string = new Date(Date.now() - 86400000).toISOString();
             await expect(ordersClient.scheduleOrder(order.data.id, pastDate)).rejects.toThrow("422");

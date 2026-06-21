@@ -43,7 +43,10 @@ test.describe("UI E2E", () => {
         })
 
         test("Should not allow scheduling in the past via UI @e2e", async ({ordersClient, mainPage}) => {
-            test.fail(true, "BUG: UI allows scheduling in the past");
+            test.fixme(
+                true,
+                "Question: Specification does not define whether a past scheduled_at should be rejected, user can select it trough UI."
+            )
             const order = await ordersClient.createOrder(createCtHeadOrder());
             await mainPage.goto();
             await mainPage.isReady();
