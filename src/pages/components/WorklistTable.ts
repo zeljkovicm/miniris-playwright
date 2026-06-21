@@ -48,7 +48,7 @@ export class WorklistTable implements Component{
         }).toPass({ timeout: 15_000, intervals: [500] });
     }
 
-    async waitForPatient(name: string): Promise<void> {
+    async containsPatient(name: string): Promise<void> {
         await expect(this.worklistTableBody.getByText(name)).toBeVisible();
     }
 
@@ -64,14 +64,14 @@ export class WorklistTable implements Component{
         await this.isReady();
     }
 
-    async containsPatient(name: string): Promise<void> {
-        await expect(this.worklistTableBody.getByText(name)).toBeVisible();
-    }
-
     async search(query: string): Promise<void> {
         await this.searchInput.fill(query);
         await this.applyButton.click();
         await this.isReady();
+    }
+
+    async isWorklistEmpty(): Promise<boolean> {
+        return await this.worklistEmpty.isVisible()
     }
 
 }

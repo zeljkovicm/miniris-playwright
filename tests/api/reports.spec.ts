@@ -5,7 +5,7 @@ import {createPerformedOrder} from "@src/helpers";
 
 test.describe("Reports API", () => {
     test.describe("Lifecycle", () => {
-        test("Should create and fetch report @api @smoke", async ({ordersClient, reportsClient}) => {
+        test("Should create and fetch report @api", async ({ordersClient, reportsClient}) => {
             const order: Order = await createPerformedOrder(ordersClient);
 
             const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.id));
@@ -17,7 +17,7 @@ test.describe("Reports API", () => {
             expect(fetched.data.id).toBe(report.data.id);
         })
 
-        test("Should sign a report @api @smoke", async ({ordersClient, reportsClient}) => {
+        test("Should sign a report @api", async ({ordersClient, reportsClient}) => {
             const order: Order = await createPerformedOrder(ordersClient);
 
             const report: ApiResponse<Report> = await reportsClient.createReport(createReportData(order.id));

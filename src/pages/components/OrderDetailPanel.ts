@@ -1,4 +1,4 @@
-import {Page, Locator} from "@playwright/test";
+import {Page, Locator, expect} from "@playwright/test";
 import {Component} from "@src/pages/components/Component";
 
 export class OrderDetailPanel implements Component {
@@ -74,6 +74,10 @@ export class OrderDetailPanel implements Component {
 
     async hasError(): Promise<boolean> {
         return await this.detailError.isVisible();
+    }
+
+    async expectError(): Promise<void> {
+        await expect(this.detailError).toBeVisible();
     }
 
 }

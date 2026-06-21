@@ -12,7 +12,7 @@ test.describe("Orders API", () => {
             expect(Array.isArray(orders.data.items)).toBe(true);
         })
 
-        test("Should create and fetch an order @api @smoke", async ({ordersClient}) => {
+        test("Should create and fetch an order @api", async ({ordersClient}) => {
             const orderData: CreateOrder = createCtHeadOrder();
             const order: ApiResponse<Order> = await ordersClient.createOrder(orderData);
 
@@ -26,7 +26,7 @@ test.describe("Orders API", () => {
             expect(fetched.data.patient_name).toBe(order.data.patient_name);
         })
 
-        test("Should schedule an order @api @smoke", async({ordersClient}) => {
+        test("Should schedule an order @api", async({ordersClient}) => {
             const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
             const scheduledAt: string  = new Date().toISOString();
 
