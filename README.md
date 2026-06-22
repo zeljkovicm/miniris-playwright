@@ -356,3 +356,22 @@ cleanly and fully. It also gives me a clear line: if the API tests pass but a UI
 fails, I know the problem is in the UI, not the logic. So I put most of my effort
 where it tells me the most and kept the UI tests focused on the journey a user
 actually takes.
+
+### I. Thinner UI coverage (filters and invalid actions)
+
+**What I left out.** On the UI side I kept filtering light: I test filter by status
+through the UI, but not filter by modality, and not every filter combination. I also
+don't check how the UI handles invalid actions - for example performing an order
+that isn't scheduled, or signing a report that isn't reported.
+
+**Why.** The filter controls are the same kind of field working the same way, so once
+I've shown status filtering works through the UI and proven modality filtering at the
+API layer (see B), testing every UI filter and combination adds very little.
+
+For invalid actions there's a wrinkle: the UI already guards against most of them by
+hiding the button that doesn't apply (the perform button only shows when an order is
+scheduled), so a user usually can't even trigger the bad action. With more time I'd
+cover this from two sides - assert that the right actions are shown or hidden for each
+status, and assert that the error banner (`detail-error`) appears when an action does
+fail. I left both as a next step and focused on the happy journey plus the rule
+checks at the API layer.
