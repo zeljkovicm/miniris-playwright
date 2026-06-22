@@ -7,10 +7,11 @@
     "build": "tsc",
     "test": "playwright test",
     "test:api": "playwright test --grep @api",
+    "test:ui": "playwright test --grep @ui",
     "test:e2e": "playwright test --grep @e2e",
+    "test:smoke": "playwright test --grep @smoke",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "test:smoke": "playwright test --grep @smoke",
     "report": "playwright show-report"
   },
   "devDependencies": {
@@ -21,3 +22,4 @@
   },
   "private": true
 }
+

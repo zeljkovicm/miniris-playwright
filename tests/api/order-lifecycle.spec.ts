@@ -3,7 +3,7 @@ import {ApiResponse, Order, Report} from "@src/types";
 import {createCtHeadOrder, createReportData} from "@src/data";
 
 test.describe("Full API workflow", () => {
-    test("Should complete full workflow from REGISTERED to SIGNED @api @smoke", async ({ordersClient, reportsClient}) => {
+    test("Should complete full workflow from REGISTERED to SIGNED @api @e2e @smoke", async ({ordersClient, reportsClient}) => {
         const order: ApiResponse<Order> = await ordersClient.createOrder(createCtHeadOrder());
         expect(order.data.status).toBe("REGISTERED");
 
